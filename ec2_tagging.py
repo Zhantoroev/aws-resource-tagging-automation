@@ -1,14 +1,16 @@
 import json
 import boto3
 
-def lambda_handler(event, context):
+
+
+def create_tags(key, value):
     ec2 = boto3.resource('ec2')
     instance_ids = []
 
     # Filtering ec2 instances by Tags name and value
     for instance in ec2.instances.all():
       for tag in instance.tags:
-        if tag['Key'] == 'Name' and tag['Value'] == 'Demo':
+        if tag['Key'] == 'Env' and 'SmthElse' in tag['Value']:
           instance_ids.append(instance.id)
 
     # Creating tags
@@ -18,7 +20,9 @@ def lambda_handler(event, context):
         Tags=[{
                 'Key': 'Env',
                 'Value': 'Dev'
-              },]
+              },
+              
+              ]
         )
     print(instance_ids)
 
